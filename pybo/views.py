@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -37,7 +38,10 @@ def detail(request, question_id):
 
     context = {'question':question}
     return render(request, 'pybo/question_detail.html', context)
-    
+
+
+#-----------------------------------#
+@login_required(login_url='common:login')
 #-------------------------------#
 def answer_create(request, question_id):
     """
@@ -48,6 +52,7 @@ def answer_create(request, question_id):
         form = AnswerForm(request.POST)
         if form.is_valid():
             answer = form.save(commit=False)
+            answer.author = request.user  # 추가한 속성 author 적용
             answer.create_date = timezone.now()
             answer.question = question
             answer.save()
@@ -57,6 +62,10 @@ def answer_create(request, question_id):
     context = {'question': question, 'form': form}
     return render(request, 'pybo/question_detail.html', context)
 #------------------------------------------#
+
+#-------------------------------------------------#
+@login_required(login_url='common:login')
+#--------------------------------------------#
 def question_create(request):
     """
     pybo 질문등록
@@ -65,6 +74,7 @@ def question_create(request):
         form = QuestionForm(request.POST)
         if form.is_valid():
             question = form.save(commit=False)
+            question.author = request.user  # 추가한 속성 author 적용
             question.create_date = timezone.now()
             question.save()
             return redirect('pybo:index')
