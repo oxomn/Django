@@ -22,8 +22,6 @@ class Answer(models.Model):
     def __str__(self):
         return self.content
 
-# ---------------------------------
-# - [edit] ---------------------------------- #
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
