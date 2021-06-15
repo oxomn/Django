@@ -1,1 +1,1 @@
-# Django master~
+# Django 페이지
