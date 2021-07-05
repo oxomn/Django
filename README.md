@@ -1,1 +1,1 @@
-# Django 페이지
+# PYBO
